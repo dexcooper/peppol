@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use Filament\Tables\Columns\TextColumn;
 use Illuminate\Support\ServiceProvider;
+use Tiptap\Nodes\Text;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -19,6 +21,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        TextColumn::configureUsing(function (TextColumn $textColumn) {
+            $textColumn->default('-');
+        });
     }
 }
