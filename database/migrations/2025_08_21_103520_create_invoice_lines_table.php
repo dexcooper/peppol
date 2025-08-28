@@ -18,7 +18,6 @@ return new class extends Migration
             $table->bigInteger('unit_price')->nullable();
             $table->integer('number')->nullable();
             $table->bigInteger('total_amount');
-            $table->string('currency', 3);
             $table->decimal('vat_rate', 5, 2);
             $table->timestamps();
         });

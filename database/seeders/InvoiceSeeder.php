@@ -29,7 +29,6 @@ class InvoiceSeeder extends Seeder
         $invoice->money = Money::of(2500, Currency::EUR->value); // €2500
         $invoice->save();
 
-
         $invoiceLine1 = new InvoiceLine([
             'description' => 'Line 1',
             'vat_rate'    => 21,
@@ -43,6 +42,5 @@ class InvoiceSeeder extends Seeder
         ]);
         $invoiceLine2->money = Money::of(1000, Currency::EUR->value); // €1500
         $invoice->invoiceLines()->save($invoiceLine2);
-
     }
 }

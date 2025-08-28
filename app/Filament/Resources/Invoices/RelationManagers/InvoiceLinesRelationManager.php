@@ -40,11 +40,17 @@ class InvoiceLinesRelationManager extends RelationManager
                     ->numeric(),
                 TextInput::make('unit_price')
                     ->label(__('forms.invoice_line.unit_price'))
-                    ->numeric(),
+                    ->numeric()
+                    ->prefix('€')
+                    ->dehydrateStateUsing(fn ($state) => $state ? (int) round($state * 100) : '')
+                    ->formatStateUsing(fn ($state) => $state ? $state / 100 : ''),
                 TextInput::make('total_amount')
                     ->label(__('forms.invoice_line.total_amount'))
                     ->required()
-                    ->numeric(),
+                    ->numeric()
+                    ->prefix('€')
+                    ->dehydrateStateUsing(fn ($state) => $state ? (int) round($state * 100) : 0)
+                    ->formatStateUsing(fn ($state) => $state ? $state / 100 : ''),
                 Select::make('vat_rate')
                     ->label(__('forms.invoice_line.vat_rate'))
                     ->options(collect(VatRate::cases())->mapWithKeys(fn(VatRate $vatRate) => [$vatRate->value => $vatRate->label()]))

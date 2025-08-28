@@ -23,7 +23,7 @@ class InvoiceLine extends Model
     {
         return Money::ofMinor(
             $this->attributes['total_amount'],
-            $this->currency
+            $this->invoice->currency->value,
         );
     }
 
@@ -34,7 +34,6 @@ class InvoiceLine extends Model
         }
 
         $this->attributes['total_amount'] = $money->getMinorAmount()->toInt();
-        $this->attributes['currency'] = $money->getCurrency()->getCurrencyCode();
     }
 
     protected function invoice(): belongsTo
@@ -44,10 +43,6 @@ class InvoiceLine extends Model
 
     protected static function booted()
     {
-        static::saving(function ($invoiceLine) {
-            $invoiceLine->money = Money::of($invoiceLine->total_amount, $invoiceLine->invoice->currency->value);
-        });
-
         static::saved(function ($invoiceLine) {
            $invoiceLine->invoice->recalculateTotalAmount();
         });

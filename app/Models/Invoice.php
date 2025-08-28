@@ -97,19 +97,10 @@ class Invoice extends Model
         return $this->belongsTo(Company::class);
     }
 
-    protected static function booted()
-    {
-        static::saved(function ($invoice) {
-            foreach ($invoice->invoiceLines as $invoiceLine) {
-               $invoiceLine->currency = $invoice->currency;
-               $invoiceLine->save();
-            }
-        });
-    }
-
     public function recalculateTotalAmount(): void
     {
         $totalAmount = $this->invoiceLines()->sum('total_amount');
+
         $this->updateQuietly([
             'total_amount' => $totalAmount,
         ]);

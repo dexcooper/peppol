@@ -25,6 +25,8 @@ return [
     ],
     'invoice_line' => [
         'description' => __('fields.description'),
+        'number' => __('fields.number'),
+        'unit_price' => 'Eenheidsprijs',
         'total_amount' => __('fields.total_amount'),
         'vat_rate' => 'BTW percentage',
     ]
