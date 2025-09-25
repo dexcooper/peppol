@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/is-alive', [IsAliveController::class, 'isAlive']);
 
 Route::post('/login', [AuthController::class, 'login']);
-Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
+Route::post('/logout', [AuthController::class, 'logout'])
+    ->middleware('auth:sanctum');
 
-Route::apiResource('invoices', InvoiceController::class);
+Route::apiResource('invoices', InvoiceController::class)
+    ->middleware(['auth:sanctum', 'company']);

@@ -2,6 +2,7 @@
 
 use App\Http\Middleware\AlwaysAcceptJson;
 use App\Http\Middleware\CamelCase;
+use \App\Http\Middleware\UserBelongsToCompany;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -16,6 +17,10 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->prependToGroup('api', AlwaysAcceptJson::class);
         $middleware->prependToGroup('api', CamelCase::class);
+
+        $middleware->alias([
+            'company' => UserBelongsToCompany::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $handler = new \App\Exceptions\Handler(app());

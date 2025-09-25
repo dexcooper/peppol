@@ -27,7 +27,6 @@ class StoreInvoiceRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'company_id' => 'required|integer|exists:companies,id',
             'title' => 'required|string|max:255',
             'description' => 'string',
             'direction' => ['required', new Enum(InvoiceDirection::class)],
@@ -36,6 +35,13 @@ class StoreInvoiceRequest extends FormRequest
             'due_date' => 'required|date_format:Y-m-d',
             'currency' => ['required', new Enum(Currency::class)],
             'total_amount' => 'required|integer',
+            'invoice_lines' => 'array',
+//            'invoice_lines.*.invoice_id' => 'required|integer|exists:invoices,id',
+            'invoice_lines.*.description' => 'string',
+            'invoice_lines.*.unit_price' => 'required|integer',
+            'invoice_lines.*.number' => 'required|integer',
+            'invoice_lines.*.total_amount' => 'required|integer',
+            'invoice_lines.*.vat_rate' => 'required|integer',
         ];
     }
 }

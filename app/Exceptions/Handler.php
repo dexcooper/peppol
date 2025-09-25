@@ -16,7 +16,8 @@ class Handler extends ExceptionHandler
 
     public function render($request, \Throwable $e)
     {
-        if ($request->is('api/*') && !config('app.debug')) {
+//        if ($request->is('api/*') && !config('app.debug')) {
+        if ($request->is('api/*')) {
             return $this->handleApiException($e);
         }
 
