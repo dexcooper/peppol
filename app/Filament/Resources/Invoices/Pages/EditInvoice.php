@@ -16,4 +16,15 @@ class EditInvoice extends EditRecord
             DeleteAction::make(),
         ];
     }
+
+    protected $listeners = [
+        'refreshInvoiceForm' => 'refreshTotalPayments',
+    ];
+
+    public function refreshTotalPayments()
+    {
+        $this->form->fill([
+            'total_amount' => $this->record->invoiceLines->sum('amount'),
+        ]);
+    }
 }

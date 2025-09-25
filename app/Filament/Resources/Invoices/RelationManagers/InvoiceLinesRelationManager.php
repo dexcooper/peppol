@@ -21,6 +21,7 @@ use Filament\Schemas\Schema;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Tiptap\Nodes\Text;
+use Illuminate\Database\Eloquent\Model;
 
 class InvoiceLinesRelationManager extends RelationManager
 {
@@ -37,13 +38,21 @@ class InvoiceLinesRelationManager extends RelationManager
                     ->maxLength(255),
                 TextInput::make('number')
                     ->label(__('forms.invoice_line.number'))
-                    ->numeric(),
+                    ->numeric()
+                    ->live()
+                    ->afterStateUpdated(function ($state, callable $set, callable $get) {
+                        $set('total_amount', $state * $get('unit_price'));
+                    }),
                 TextInput::make('unit_price')
                     ->label(__('forms.invoice_line.unit_price'))
                     ->numeric()
                     ->prefix('€')
                     ->dehydrateStateUsing(fn ($state) => $state ? (int) round($state * 100) : '')
-                    ->formatStateUsing(fn ($state) => $state ? $state / 100 : ''),
+                    ->formatStateUsing(fn ($state) => $state ? $state / 100 : '')
+                    ->live()
+                    ->afterStateUpdated(function ($state, callable $set, callable $get) {
+                        $set('total_amount', $state * $get('number'));
+                    }),
                 TextInput::make('total_amount')
                     ->label(__('forms.invoice_line.total_amount'))
                     ->required()
@@ -74,17 +83,28 @@ class InvoiceLinesRelationManager extends RelationManager
                 //
             ])
             ->headerActions([
-                CreateAction::make(),
+                CreateAction::make()
+                    ->after(function(){
+                        $this->dispatch('refreshInvoiceForm');
+                    }),
             ])
             ->recordActions([
                 EditAction::make(),
-                DeleteAction::make(),
+                DeleteAction::make()
+                    ->after(function(){
+                        $this->dispatch('refreshInvoiceForm');
+                    }),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),
             ]);
+    }
+
+    public static function getTitle(Model $ownerRecord, string $pageClass): string
+    {
+        return __('navigation/items.invoice_lines');
     }
 
     public static function getNavigationLabel(): string
