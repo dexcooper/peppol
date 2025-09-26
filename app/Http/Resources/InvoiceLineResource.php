@@ -15,6 +15,7 @@ class InvoiceLineResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            'id' => $this->id,
             'description' => $this->description,
             'unitPrice' => $this->unit_price,
             'number' => $this->number,
