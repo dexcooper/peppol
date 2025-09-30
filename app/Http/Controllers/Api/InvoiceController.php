@@ -2,18 +2,17 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreInvoiceRequest;
 use App\Http\Resources\InvoiceResource;
 use App\Models\Invoice;
-use App\Traits\ApiResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class InvoiceController extends Controller
+class InvoiceController extends ApiController
 {
-    use ApiResponse;
+    public function __construct()
+    {
+        $this->authorizeResource(\App\Models\Invoice::class, 'invoice');
+    }
 
     public function index()
     {
@@ -25,7 +24,7 @@ class InvoiceController extends Controller
         $invoice = Invoice::create($request->all());
         foreach ($request['invoice_lines'] as $invoiceLine) $invoice->invoiceLines()->create($invoiceLine);
 
-        return $this->success(new InvoiceResource($invoice));
+        return $this->success(new InvoiceResource($invoice), '', 201);
     }
 
     public function show(Invoice $invoice)

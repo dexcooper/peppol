@@ -2,14 +2,12 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
-use App\Traits\ApiResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
-class AuthController extends Controller
+class AuthController extends ApiController
 {
-    use ApiResponse;
+
     public function login(Request $request)
     {
         $credentials = $request->validate([

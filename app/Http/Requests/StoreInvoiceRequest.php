@@ -34,7 +34,7 @@ class StoreInvoiceRequest extends FormRequest
             'issue_date' => 'required|date_format:Y-m-d',
             'due_date' => 'required|date_format:Y-m-d',
             'currency' => ['required', new Enum(Currency::class)],
-            'total_amount' => 'required|integer',
+            'total_amount' => 'required|integer|min:0',
             'invoice_lines' => 'required|array|min:1',
             'invoice_lines.*.description' => 'string',
             'invoice_lines.*.unit_price' => 'required|integer|min:0',
