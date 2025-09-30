@@ -2,8 +2,12 @@
 
 namespace App\Enums;
 
+use App\Traits\EnumArrayable;
+
 enum InvoiceDirection: string
 {
+    use EnumArrayable;
+
     // Incoming invoices
     case Outgoing = 'outgoing';
     case Incoming = 'incoming';

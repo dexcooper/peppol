@@ -4,11 +4,14 @@ namespace App\Models;
 
 use App\Enums\Currency;
 use Brick\Money\Money;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class InvoiceLine extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
         'invoice_id',
         'description',
@@ -36,7 +39,7 @@ class InvoiceLine extends Model
         $this->attributes['total_amount'] = $money->getMinorAmount()->toInt();
     }
 
-    protected function invoice(): belongsTo
+    public function invoice(): belongsTo
     {
         return $this->belongsTo(Invoice::class);
     }

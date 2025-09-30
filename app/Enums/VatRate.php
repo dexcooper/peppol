@@ -2,8 +2,12 @@
 
 namespace App\Enums;
 
+use App\Traits\EnumArrayable;
+
 enum VatRate: int
 {
+    use EnumArrayable;
+
     // Incoming invoices
     case Six = 6;
     case Twelve = 12;

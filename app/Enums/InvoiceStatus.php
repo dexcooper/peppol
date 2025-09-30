@@ -2,8 +2,12 @@
 
 namespace App\Enums;
 
+use App\Traits\EnumArrayable;
+
 enum InvoiceStatus: string
 {
+    use EnumArrayable;
+
     // Incoming invoices
     case Draft = 'draft';
     case Queued = 'queued';
