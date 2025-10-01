@@ -18,17 +18,20 @@ class InvoiceLineFactory extends Factory
      */
     public function definition(): array
     {
-        $unitPrice = $this->faker->numberBetween(100, 1000);
+        $unitPrice = $this->faker->numberBetween(100, 1000) * 100;
         $number = $this->faker->numberBetween(1, 5);
+        $vatRate = $this->faker->randomElement(VatRate::values());
         $total = $unitPrice * $number;
+        $vat = $total * ($vatRate / 100);
 
         return [
-            'invoice_id' => Invoice::factory(),
-            'description'  => $this->faker->sentence(4),
-            'unit_price'   => $unitPrice,
-            'number'       => $number,
-            'total_amount' => $total,
-            'vat_rate'     => $this->faker->randomElement(VatRate::values()),
+            'invoice_id'    => Invoice::factory(),
+            'description'   => $this->faker->name . ' Product',
+            'unit_price'    => $unitPrice,
+            'number'        => $number,
+            'vat_rate'      => $vatRate,
+            'vat'           => $vat,
+            'total'         => $total,
         ];
     }
 }

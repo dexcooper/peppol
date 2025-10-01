@@ -21,7 +21,11 @@ class InvoiceController extends ApiController
 
     public function store(StoreInvoiceRequest $request)
     {
-        $invoice = Invoice::create($request->all());
+        $data = $request->validated();
+        $data['company_id'] = auth()->user()->company_id;
+
+        $invoice = Invoice::create($data);
+
         foreach ($request['invoice_lines'] as $invoiceLine) $invoice->invoiceLines()->create($invoiceLine);
 
         return $this->success(new InvoiceResource($invoice), '', 201);
@@ -34,7 +38,7 @@ class InvoiceController extends ApiController
 
     public function update(Invoice $invoice, StoreInvoiceRequest $request)
     {
-        $invoice->update($request->all());
+        $invoice->update($request->validated());
         if ($request->has('invoice_lines')) {
             $invoice->invoiceLines()->delete();
             foreach ($request['invoice_lines'] as $invoiceLine) $invoice->invoiceLines()->create($invoiceLine);

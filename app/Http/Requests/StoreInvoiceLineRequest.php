@@ -23,10 +23,11 @@ class StoreInvoiceLineRequest extends FormRequest
     {
         return [
             'description' => 'string',
-            'unit_price' => 'required|integer|min:0',
-            'number' => 'required|integer|min:1',
-            'total_amount' => 'required|integer|min:0',
-            'vat_rate' => 'required|integer|min:0',
+            'unit_price' => 'integer',
+            'number' => 'integer|min:1',
+            'vat_rate' => 'integer',
+            'vat' => 'required|integer',
+            'total' => 'required|integer',
         ];
     }
 }

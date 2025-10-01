@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('invoices', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(\App\Models\Company::class)->constrained()->restrictOnDelete();
+            $table->string('external_id');
             $table->string('title')->nullable();
             $table->longText('description')->nullable();
             $table->string('direction')->default('outgoing');
@@ -22,7 +23,6 @@ return new class extends Migration
             $table->date('issue_date')->nullable();
             $table->date('due_date')->nullable();
             $table->string('currency')->default('EUR');
-            $table->bigInteger('total_amount')->default(0);
             $table->longText('raw_xml')->nullable();
             $table->timestamps();
         });
