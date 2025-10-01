@@ -19,8 +19,9 @@ class InvoiceLineResource extends JsonResource
             'description' => $this->description,
             'unitPrice' => $this->unit_price,
             'number' => $this->number,
-            'totalAmount' => $this->total_amount,
             'vatRate' => $this->vat_rate,
+            'vat' => $this->vat,
+            'total' => $this->total,
         ];
     }
 }

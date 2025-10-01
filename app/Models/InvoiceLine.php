@@ -17,15 +17,15 @@ class InvoiceLine extends Model
         'description',
         'unit_price',
         'number',
-        'total_amount',
-        'currency',
         'vat_rate',
+        'vat',
+        'total',
     ];
 
    public function getMoneyAttribute(): Money
     {
         return Money::ofMinor(
-            $this->attributes['total_amount'],
+            $this->attributes['total'],
             $this->invoice->currency->value,
         );
     }
@@ -36,22 +36,11 @@ class InvoiceLine extends Model
             throw new \InvalidArgumentException('Currency not allowed');
         }
 
-        $this->attributes['total_amount'] = $money->getMinorAmount()->toInt();
+        $this->attributes['total'] = $money->getMinorAmount()->toInt();
     }
 
     public function invoice(): belongsTo
     {
         return $this->belongsTo(Invoice::class);
-    }
-
-    protected static function booted()
-    {
-        static::saved(function ($invoiceLine) {
-           $invoiceLine->invoice->recalculateTotalAmount();
-        });
-
-        static::deleted(function ($invoiceLine) {
-           $invoiceLine->invoice->recalculateTotalAmount();
-        });
     }
 }

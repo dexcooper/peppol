@@ -25,15 +25,21 @@ class Invoice extends Model
 
     protected $fillable = [
         'company_id',
+        'external_id',
         'title',
         'description',
         'direction',
+        'peppol_id',
         'status',
         'issue_date',
         'due_date',
-        'total_amount',
         'currency',
         'raw_xml',
+    ];
+
+    protected $attributes = [
+        'company_id' => Auth::class,
+        'status' => InvoiceStatus::Draft,
     ];
 
     public function updateStatus(InvoiceStatus $newStatus): bool
@@ -65,19 +71,9 @@ class Invoice extends Model
     public function getMoneyAttribute(): Money
     {
         return Money::ofMinor(
-            $this->attributes['total_amount'],
+            $this->total,
             $this->currency->value
         );
-    }
-
-    public function setMoneyAttribute(Money $money): void
-    {
-        if (!in_array($money->getCurrency()->getCurrencyCode(), Currency::allowed(), true)) {
-            throw new \InvalidArgumentException('Currency not allowed');
-        }
-
-        $this->attributes['total_amount'] = $money->getMinorAmount()->toInt();
-        $this->attributes['currency'] = $money->getCurrency()->getCurrencyCode();
     }
 
     public function getFormattedAmountAttribute(): string
@@ -100,13 +96,13 @@ class Invoice extends Model
         return $this->belongsTo(Company::class);
     }
 
-    public function recalculateTotalAmount(): void
+    public function getVatAttribute()
     {
-        $totalAmount = $this->invoiceLines()->sum('total_amount');
-
-        $this->updateQuietly([
-            'total_amount' => $totalAmount,
-        ]);
+        return $this->invoiceLines()->sum('vat');
     }
 
+    public function getTotalAttribute()
+    {
+        return $this->invoiceLines()->sum('total');
+    }
 }
