@@ -24,11 +24,7 @@ class InvoiceLineController extends ApiController
     {
         $this->authorize('view', $invoice);
 
-        $invoiceLine = $invoice->invoiceLines()->create($request->all());
-
-        $invoiceLine->invoice->update([
-            'total_amount' => $invoiceLine->invoice->invoiceLines->sum('total_amount')
-        ]);
+        $invoiceLine = $invoice->invoiceLines()->create($request->validated());
 
         return $this->success(new InvoiceLineResource($invoiceLine), '',201);
     }
@@ -40,11 +36,7 @@ class InvoiceLineController extends ApiController
 
     public function update(InvoiceLine $invoiceLine, StoreInvoiceLineRequest $request)
     {
-        $invoiceLine->update($request->all());
-
-        $invoiceLine->invoice->update([
-            'total_amount' => $invoiceLine->invoice->invoiceLines->sum('total_amount')
-        ]);
+        $invoiceLine->update($request->validated());
 
         return $this->success(new InvoiceLineResource($invoiceLine));
     }
@@ -52,10 +44,6 @@ class InvoiceLineController extends ApiController
     public function destroy(InvoiceLine $invoiceLine)
     {
         $invoiceLine->delete();
-
-        $invoiceLine->invoice->update([
-            'total_amount' => $invoiceLine->invoice->invoiceLines->sum('total_amount')
-        ]);
 
         return response()->noContent();
     }

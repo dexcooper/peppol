@@ -17,6 +17,7 @@ class InvoiceResource extends JsonResource
         return [
             'id' => $this->id,
             'company' => new CompanyResource($this->company),
+            'externalId' => $this->external_id,
             'title' => $this->title,
             'description' => $this->description,
             'direction' => $this->direction,
@@ -25,7 +26,6 @@ class InvoiceResource extends JsonResource
             'issueDate' => $this->issue_date,
             'dueDate' => $this->due_date,
             'currency' => $this->currency,
-            'totalAmount' => $this->total_amount,
             'invoiceLines' => $this->invoiceLines ? InvoiceLineResource::collection($this->invoiceLines) : null,
         ];
     }
