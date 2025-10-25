@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Companies\Tables;
 
+use App\Filament\Resources\Companies\Actions\RegisterInMaventaAction;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\CreateAction;
 use Filament\Actions\DeleteAction;
@@ -17,6 +18,7 @@ class CompaniesTable
         return $table
             ->columns([
                 TextColumn::make('name')->label(__('forms.company.name'))->sortable(),
+                TextColumn::make('vat_number')->label(__('forms.company.vat_number'))->sortable(),
             ])
             ->filters([
                 //

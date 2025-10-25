@@ -10,7 +10,11 @@ class Company extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'vat_number'];
+    protected $fillable = [
+        'name',
+        'vat_number',
+        'maventa_company_id',
+    ];
 
     public function users(): HasMany
     {
@@ -20,5 +24,12 @@ class Company extends Model
     public function invoices(): HasMany
     {
         return $this->hasMany(Invoice::class);
+    }
+
+   public function getApiUser(): ?User
+    {
+        return $this->users()
+            ->whereNotNull('maventa_user_id')
+            ->first();
     }
 }
