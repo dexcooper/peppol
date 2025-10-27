@@ -21,6 +21,14 @@ test('validates external_id is required', function () {
     expect($validator->errors()->has('external_id'))->toBeTrue();
 });
 
+test('validates vat_number is required', function () {
+    $request = new StoreInvoiceRequest();
+    $validator = Validator::make([], $request->rules());
+
+    expect($validator->fails())->toBeTrue();
+    expect($validator->errors()->has('vat_number'))->toBeTrue();
+});
+
 test('validates title is string', function () {
     $request = new StoreInvoiceRequest();
     $validator = Validator::make(['title' => 123], $request->rules());
@@ -61,6 +69,7 @@ test('accepts valid direction enum values', function () {
             [
                 'title' => 'Test',
                 'external_id' => 'EXT-001',
+                'vat_number' => 'BE1234',
                 'direction' => $direction->value,
                 'issue_date' => '2025-01-01',
                 'due_date' => '2025-02-01',
@@ -96,6 +105,7 @@ test('accepts valid issue_date format', function () {
         [
             'title' => 'Test',
             'external_id' => 'EXT-001',
+            'vat_number' => 'BE1234',
             'direction' => InvoiceDirection::Incoming->value,
             'issue_date' => '2025-01-01',
             'due_date' => '2025-02-01',
@@ -148,6 +158,7 @@ test('accepts valid currency enum values', function () {
             [
                 'title' => 'Test',
                 'external_id' => 'EXT-001',
+                'vat_number' => 'BE1234',
                 'direction' => InvoiceDirection::Incoming->value,
                 'issue_date' => '2025-01-01',
                 'due_date' => '2025-02-01',
@@ -191,6 +202,7 @@ test('validates invoice_lines description is string', function () {
         [
             'title' => 'Test',
             'external_id' => 'EXT-001',
+            'vat_number' => 'BE1234',
             'direction' => InvoiceDirection::Incoming->value,
             'issue_date' => '2025-01-01',
             'due_date' => '2025-02-01',
@@ -332,6 +344,7 @@ test('validates multiple invoice_lines independently', function () {
         [
             'title' => 'Test',
             'external_id' => 'EXT-001',
+            'vat_number' => 'BE1234',
             'direction' => InvoiceDirection::Incoming->value,
             'issue_date' => '2025-01-01',
             'due_date' => '2025-02-01',
@@ -359,6 +372,7 @@ test('description is optional', function () {
         [
             'title' => 'Test',
             'external_id' => 'EXT-001',
+            'vat_number' => 'BE1234',
             'direction' => InvoiceDirection::Incoming->value,
             'issue_date' => '2025-01-01',
             'due_date' => '2025-02-01',
