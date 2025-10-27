@@ -35,6 +35,7 @@ class Invoice extends Model
         'due_date',
         'currency',
         'raw_xml',
+        'vat_number'
     ];
 
     protected $attributes = [

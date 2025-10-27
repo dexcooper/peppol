@@ -27,6 +27,7 @@ class StoreInvoiceRequest extends FormRequest
         return [
             'title' => 'required|string|max:255',
             'external_id' => 'required|string',
+            'vat_number' => 'required|string',
             'description' => 'string',
             'direction' => ['required', new Enum(InvoiceDirection::class)],
             'issue_date' => 'required|date_format:Y-m-d',
