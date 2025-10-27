@@ -23,6 +23,7 @@ class InvoiceFactory extends Factory
         return [
             'company_id'   => Company::factory(),
             'external_id'  => (string) $this->faker->numberBetween(1, 1000),
+            'vat_number'   => $this->faker->text(10),
             'title'        => $this->faker->sentence(3),
             'description'  => $this->faker->paragraph(),
             'direction'    => $this->faker->randomElement(InvoiceDirection::values()),

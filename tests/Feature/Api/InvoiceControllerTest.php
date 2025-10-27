@@ -28,6 +28,7 @@ test('can create invoice with invoice lines', function () {
     $invoiceData = [
         'title' => 'Test Invoice',
         'external_id' => 'INV-001',
+        'vat_number' => 'BE1234',
         'description' => 'Test description',
         'direction' => InvoiceDirection::Incoming->value,
         'issue_date' => '2025-01-01',
@@ -99,6 +100,7 @@ test('can update invoice', function () {
     $updateData = [
         'title' => 'Updated Invoice',
         'external_id' => $invoice->external_id,
+        'vat_number' => $invoice->vat_number,
         'description' => 'Updated description',
         'direction' => $invoice->direction->value,
         'issue_date' => $invoice->issue_date,
@@ -136,6 +138,7 @@ test('can update invoice with new invoice lines', function () {
     $updateData = [
         'title' => $invoice->title,
         'external_id' => $invoice->external_id,
+        'vat_number' => $invoice->vat_number,
         'description' => $invoice->description,
         'direction' => $invoice->direction->value,
         'issue_date' => $invoice->issue_date,
@@ -169,6 +172,7 @@ test('cannot update invoice from other company', function () {
     $updateData = [
         'title' => 'Updated Invoice',
         'external_id' => $invoice->external_id,
+        'vat_number' => $invoice->vat_number,
         'description' => 'Updated description',
         'direction' => $invoice->direction->value,
         'issue_date' => $invoice->issue_date,
@@ -194,6 +198,7 @@ test('cannot update peppol_id en status on invoice', function () {
     $updateData = [
         'title' => $invoice->title,
         'external_id' => $invoice->external_id,
+        'vat_number' => $invoice->vat_number,
         'description' => $invoice->description,
         'direction' => $invoice->direction->value,
         'issue_date' => $invoice->issue_date,
