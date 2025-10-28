@@ -1,6 +1,8 @@
 <?php
 
 return [
+    'maventa' => 'Maventa',
+    'first_name' => 'Voornaam',
     'name' => 'Naam',
     'title' => 'Titel',
     'description' => 'Omschrijving',
@@ -13,4 +15,14 @@ return [
     'other' => 'Andere',
     'total_amount' => 'Bedrag',
     'number' => 'Aantal',
+    'general' => 'Algemeen',
+    'address' => 'Adres',
+    'street' => 'Straat',
+    'number' => 'Nummer',
+    'zip_code' => 'Postcode',
+    'city' => 'Stad',
+    'country' => 'Land',
+    'active' => 'Actief',
+    'inactive' => 'Inactief',
+    'contact_person' => 'Contactpersoon'
 ];

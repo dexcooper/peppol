@@ -2,7 +2,9 @@
 
 namespace App\Filament\Resources\Companies\Pages;
 
+use App\Filament\Actions\RegisterInMaventaAction;
 use App\Filament\Resources\Companies\CompanyResource;
+use App\Filament\Resources\Companies\Widgets\MaventaStatus;
 use Filament\Actions\DeleteAction;
 use Filament\Resources\Pages\EditRecord;
 
@@ -13,7 +15,7 @@ class EditCompany extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            DeleteAction::make(),
+
         ];
     }
 

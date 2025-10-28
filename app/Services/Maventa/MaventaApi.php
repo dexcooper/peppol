@@ -40,13 +40,7 @@ class MaventaApi
             ->timeout(config('maventa.timeout', 15));
 
         if ($this->useAccessToken && $this->company) {
-            $apiUser = $this->company->getApiUser();
-
-            if (! $apiUser) {
-                throw new \RuntimeException("No API user found for company [{$this->company->id}]");
-            }
-
-            $token = $this->auth->getAccessToken($apiUser);
+            $token = $this->auth->getAccessToken($this->company);
             $client = $client->withToken($token);
         }
 

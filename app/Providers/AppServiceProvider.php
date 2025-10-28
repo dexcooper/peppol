@@ -2,16 +2,20 @@
 
 namespace App\Providers;
 
-use Carbon\Carbon;
+use App\Models\Invoice;
+use App\Policies\InvoicePolicy;
 use Filament\Tables\Columns\TextColumn;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
-use Tiptap\Nodes\Text;
 
 class AppServiceProvider extends ServiceProvider
 {
+    protected $policies = [
+        Invoice::class => InvoicePolicy::class,
+    ];
+
     /**
      * Register any application services.
      */

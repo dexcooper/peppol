@@ -7,6 +7,7 @@ use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 
 class UsersTable
@@ -29,7 +30,8 @@ class UsersTable
                     ->searchable(),
             ])
             ->filters([
-                //
+                SelectFilter::make('company_id')
+                    ->relationship('company', 'name')
             ])
             ->recordActions([
                 EditAction::make(),

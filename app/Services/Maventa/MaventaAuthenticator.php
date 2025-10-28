@@ -18,24 +18,22 @@ class MaventaAuthenticator
         $this->baseUrl = config('maventa.base_url');
     }
 
-   public function getAccessToken(User $user): string
+   public function getAccessToken(Company $company): string
     {
-        $company = $user->company;
+        if (empty($company->maventa_user_id)) {
+            throw new \RuntimeException("Company [{$company->id}] has no maventa_user_id.");
+        }
 
         if (empty($company?->maventa_company_id)) {
             throw new \RuntimeException("Company [{$company?->id}] has no maventa_company_id.");
         }
 
-        if (empty($user->maventa_user_id)) {
-            throw new \RuntimeException("User [{$user->id}] has no maventa_user_id.");
-        }
-
-        return Cache::remember($this->getCacheKey($user), now()->addMinutes(50), function () use ($company, $user) {
-            return $this->requestNewToken($company->maventa_company_id, $user->maventa_user_id, $user->id);
+        return Cache::remember($this->getCacheKey($company), now()->addMinutes(50), function () use ($company) {
+            return $this->requestNewToken($company->maventa_company_id, $company->maventa_user_id, $company->id);
         });
     }
 
-    protected function requestNewToken(string $maventaCompanyId, string $maventaUserIid, int $userId): string
+    protected function requestNewToken(string $maventaCompanyId, string $maventaUserIid, int $companyId): string
     {
         $response = Http::asForm()->post("{$this->baseUrl}/oauth2/token", [
             'grant_type' => 'client_credentials',
@@ -45,11 +43,11 @@ class MaventaAuthenticator
 
         if ($response->failed()) {
             Log::error('Maventa token request failed', [
-                'user_id' => $userId,
+                'user_id' => $companyId,
                 'status' => $response->status(),
                 'body' => $response->body(),
             ]);
-            throw new \RuntimeException("Failed to obtain Maventa access token for company {$userId}");
+            throw new \RuntimeException("Failed to obtain Maventa access token for company {$companyId}");
         }
 
         $data = $response->json();
@@ -62,8 +60,8 @@ class MaventaAuthenticator
         return $this->getAccessToken($user);
     }
 
-    protected function getCacheKey(User $user)
+    protected function getCacheKey(Company $company)
     {
-        return "maventa_token_user_{$user->id}";
+        return "maventa_token_user_{$company->id}";
     }
 }

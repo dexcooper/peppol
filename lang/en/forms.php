@@ -2,8 +2,20 @@
 
 return [
     'company' => [
+        'general' => __('fields.general'),
+        'first_name' => __('fields.first_name'),
         'name' => __('fields.name'),
+        'email'  => __('fields.email'),
         'vat_number'  => 'VAT number',
+        'contact_person' => __('fields.contact_person'),
+        'address' => __('fields.address'),
+        'street' => __('fields.street'),
+        'number' => __('fields.number'),
+        'zip_code' => __('fields.zip_code'),
+        'city' => __('fields.city'),
+        'country' => __('fields.country'),
+        'peppol' => 'Peppol',
+        'peppol_provider' => 'Peppol provider',
     ],
     'user' => [
         'name' => __('fields.name'),

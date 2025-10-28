@@ -2,18 +2,34 @@
 
 namespace App\Models;
 
+use App\Enums\PeppolProvider;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Company extends Model
 {
     use HasFactory;
 
+    protected $casts = [
+        'peppol_provider' => PeppolProvider::class,
+    ];
+
     protected $fillable = [
+        'peppol_provider',
+        'maventa_company_id',
+        'maventa_user_id',
         'name',
         'vat_number',
-        'maventa_company_id',
+        'email',
+        'contact_person_first_name',
+        'contact_person_name',
+        'street',
+        'number',
+        'zip_code',
+        'city',
+        'country',
     ];
 
     public function users(): HasMany
@@ -26,10 +42,10 @@ class Company extends Model
         return $this->hasMany(Invoice::class);
     }
 
-   public function getApiUser(): ?User
+    public function getAddressAttribute()
     {
-        return $this->users()
-            ->whereNotNull('maventa_user_id')
-            ->first();
+        $address = $this->street;
+        if ($this->number != '') $address .= ' '.$this->number;
+        return $address;
     }
 }

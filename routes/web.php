@@ -2,6 +2,7 @@
 
 use App\Enums\Currency;
 use App\Enums\InvoiceStatus;
+use App\Models\Company;
 use App\Models\Invoice;
 use App\Models\InvoiceLine;
 use App\Models\User;
@@ -17,24 +18,20 @@ Route::get('/', function () {
 
 Route::get('/test', function () {
 
-    $baseUrl = config('maventa.base_url');
-    $endpoint = 'v1/users';
+    $company = Company::where('id', '=', 6)->first();
 
-    Http::fake([
-        '*/v1/users' => function ($request) {
-            dump('Intercepted:', $request->url());
-            return Http::response(['user_api_key' => 'maventa_user_123'], 200);
-        },
-    ]);
+    $payload = [
+        'name' => $company->name,
+        'bid' => $company->vat_number ?? null,
+        'no_vat' => false,
+        'address1' => $company->address,
+        'post_code' => $company->zip_code,
+        'post_office' => $company->city,
+        'city' => $company->city,
+        'country' => $company->country,
+        'email' => $company->email,
+    ];
 
-    $fullUrl = rtrim($baseUrl, '/') . '/' . ltrim($endpoint, '/');
-
-     $client = Http::baseUrl($baseUrl)
-            ->acceptJson()
-            ->timeout(config('maventa.timeout', 15));
-
-     $response = $client->get($fullUrl, []);
-
-     dd($response->json());
+    dd($payload);
 
 });
