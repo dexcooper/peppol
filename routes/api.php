@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\InvoiceController;
 use App\Http\Controllers\Api\InvoiceLineController;
 use App\Http\Controllers\Api\IsAliveController;
+use App\Http\Controllers\Api\VatValidationController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -11,6 +12,9 @@ Route::get('/is-alive', [IsAliveController::class, 'isAlive']);
 
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])
+    ->middleware('auth:sanctum');
+
+Route::post('/validate-vat', [VatValidationController::class, 'validateVat'])
     ->middleware('auth:sanctum');
 
 Route::apiResource('invoices', InvoiceController::class)
