@@ -14,7 +14,7 @@ return [
     'details' => 'Details',
     'other' => 'Andere',
     'total_amount' => 'Bedrag',
-    'number' => 'Aantal',
+    'amount' => 'Aantal',
     'general' => 'Algemeen',
     'address' => 'Adres',
     'street' => 'Straat',
@@ -24,5 +24,6 @@ return [
     'country' => 'Land',
     'active' => 'Actief',
     'inactive' => 'Inactief',
-    'contact_person' => 'Contactpersoon'
+    'contact_person' => 'Contactpersoon',
+    'vat_number' => 'BTW nummer',
 ];

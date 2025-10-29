@@ -9,14 +9,14 @@ enum InvoiceDirection: string
     use EnumArrayable;
 
     // Incoming invoices
-    case Outgoing = 'outgoing';
-    case Incoming = 'incoming';
+    case OUTGOING = 'outgoing';
+    case INCOMING = 'incoming';
 
     public function label(): string
     {
         return match ($this) {
-            self::Outgoing => __('enums.invoice_direction.outgoing'),
-            self::Incoming => __('enums.invoice_direction.incoming'),
+            self::OUTGOING => __('enums.invoice_direction.outgoing'),
+            self::INCOMING => __('enums.invoice_direction.incoming'),
         };
     }
 }

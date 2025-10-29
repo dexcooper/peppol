@@ -80,7 +80,7 @@ test('has default status of draft', function () {
     ]);
 
     // Default status zou Draft moeten zijn
-    expect($invoice->status)->toBe(InvoiceStatus::Draft);
+    expect($invoice->status)->toBe(InvoiceStatus::DRAFT);
 });
 
 test('fillable attributes include all expected fields', function () {

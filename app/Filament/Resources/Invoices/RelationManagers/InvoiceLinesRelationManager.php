@@ -30,14 +30,10 @@ class InvoiceLinesRelationManager extends RelationManager
     public function form(Schema $schema): Schema
     {
         return $schema
-            ->columns(1)
+            ->columns(4)
             ->components([
-                TextInput::make('description')
-                    ->label(__('forms.invoice_line.description'))
-                    ->required()
-                    ->maxLength(255),
                 TextInput::make('number')
-                    ->label(__('forms.invoice_line.number'))
+                    ->label(__('forms.invoice_line.amount'))
                     ->numeric()
                     ->live()
                     ->afterStateUpdated(function ($state, callable $set, callable $get) {
@@ -53,17 +49,32 @@ class InvoiceLinesRelationManager extends RelationManager
                     ->afterStateUpdated(function ($state, callable $set, callable $get) {
                         $set('total_amount', $state * $get('number'));
                     }),
-                TextInput::make('total_amount')
-                    ->label(__('forms.invoice_line.total_amount'))
+                Select::make('vat_rate')
+                    ->label(__('forms.invoice_line.vat_rate'))
+                    ->options(collect(VatRate::cases())->mapWithKeys(fn(VatRate $vatRate) => [$vatRate->value => $vatRate->label()]))
+                    ->required(),
+                TextInput::make('vat')
+                    ->label(__('forms.invoice_line.vat'))
+                    ->numeric()
+                    ->prefix('€')
+                    ->dehydrateStateUsing(fn ($state) => $state ? (int) round($state * 100) : '')
+                    ->formatStateUsing(fn ($state) => $state ? $state / 100 : '')
+                    ->live()
+                    ->afterStateUpdated(function ($state, callable $set, callable $get) {
+                        $set('total_amount', $state * $get('number'));
+                    }),
+                TextInput::make('total')
+                    ->label(__('forms.invoice_line.total'))
                     ->required()
                     ->numeric()
                     ->prefix('€')
                     ->dehydrateStateUsing(fn ($state) => $state ? (int) round($state * 100) : 0)
                     ->formatStateUsing(fn ($state) => $state ? $state / 100 : ''),
-                Select::make('vat_rate')
-                    ->label(__('forms.invoice_line.vat_rate'))
-                    ->options(collect(VatRate::cases())->mapWithKeys(fn(VatRate $vatRate) => [$vatRate->value => $vatRate->label()]))
+                TextInput::make('description')
+                    ->label(__('forms.invoice_line.description'))
                     ->required()
+                    ->columnSpan(4)
+                    ->maxLength(255),
             ]);
     }
 

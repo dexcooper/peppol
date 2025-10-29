@@ -14,7 +14,7 @@ return [
     'details' => 'Details',
     'other' => 'Other',
     'total_amount' => 'Amount',
-    'number' => 'Number',
+    'amount' => 'Number',
     'general' => 'General',
     'address' => 'Address',
     'street' => 'Street',
@@ -24,5 +24,6 @@ return [
     'country' => 'Country',
     'active' => 'Active',
     'inactive' => 'Inactive',
-    'contact_person' => 'Contact person'
+    'contact_person' => 'Contact person',
+    'vat_number' => 'BTW nummer',
 ];

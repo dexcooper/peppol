@@ -40,7 +40,7 @@ class Invoice extends Model
 
     protected $attributes = [
         'company_id' => Auth::class,
-        'status' => InvoiceStatus::Draft,
+        'status' => InvoiceStatus::DRAFT,
     ];
 
     public function updateStatus(InvoiceStatus $newStatus): bool

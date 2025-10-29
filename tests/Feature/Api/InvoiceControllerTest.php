@@ -30,7 +30,7 @@ test('can create invoice with invoice lines', function () {
         'external_id' => 'INV-001',
         'vat_number' => 'BE1234',
         'description' => 'Test description',
-        'direction' => InvoiceDirection::Incoming->value,
+        'direction' => InvoiceDirection::INCOMING->value,
         'issue_date' => '2025-01-01',
         'due_date' => '2025-02-01',
         'currency' => Currency::EUR->value,
@@ -265,7 +265,7 @@ test('validates invoice_lines must have at least one item', function () {
     $invoiceData = [
         'title' => 'Test Invoice',
         'external_id' => 'INV-001',
-        'direction' => InvoiceDirection::Incoming->value,
+        'direction' => InvoiceDirection::INCOMING->value,
         'issue_date' => '2025-01-01',
         'due_date' => '2025-02-01',
         'currency' => Currency::EUR->value,
@@ -282,7 +282,7 @@ test('validates date format', function () {
     $invoiceData = [
         'title' => 'Test Invoice',
         'external_id' => 'INV-001',
-        'direction' => InvoiceDirection::Incoming->value,
+        'direction' => InvoiceDirection::INCOMING->value,
         'issue_date' => '01-01-2025', // verkeerd formaat
         'due_date' => '2025/02/01', // verkeerd formaat
         'currency' => Currency::EUR->value,
