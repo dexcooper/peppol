@@ -14,6 +14,9 @@ return [
     'invoice_direction' => [
         'outgoing' => 'Uitgaand',
         'incoming' => 'Inkomend',
+    ],
+    'maventa_countries' => [
+        'BE' => 'Belgïe'
     ]
 ];
 

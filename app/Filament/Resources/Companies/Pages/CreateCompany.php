@@ -16,16 +16,4 @@ class CreateCompany extends CreateRecord
     {
         return $this->getResource()::getUrl('index');
     }
-
-//    protected function getFormActions(): array
-//    {
-//        return [
-//            CreateAction::make()
-//                ->createAnother(false),
-//            \Filament\Actions\Action::make('cancel')
-//                ->label(__('actions.cancel'))
-//                ->url($this->getResource()::getUrl('index'))
-//                ->color('gray')
-//        ];
-//    }
 }
