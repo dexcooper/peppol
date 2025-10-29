@@ -35,7 +35,7 @@ class MaventaApi
 
     protected function client()
     {
-        $client = Http::baseUrl($this->baseUrl)
+        $client = Http::loggable()->baseUrl($this->baseUrl)
             ->acceptJson()
             ->timeout(config('maventa.timeout', 15));
 
