@@ -177,10 +177,17 @@ return [
     */
 
     'custom' => [
-        'attribute-name' => [
-            'rule-name' => 'custom-message',
+        'name' => [
+            'unique' => 'This name is already in use',
+        ],
+        'email' => [
+            'unique' => 'This email address is already in use',
+        ],
+        'vat_number' => [
+            'unique' => 'This vat number is already in use',
         ],
     ],
+
 
     /*
     |--------------------------------------------------------------------------

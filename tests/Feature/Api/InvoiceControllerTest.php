@@ -168,6 +168,9 @@ test('can update invoice with new invoice lines', function () {
 test('cannot update invoice from other company', function () {
     $otherCompany = Company::factory()->create();
     $invoice = Invoice::factory()->create(['company_id' => $otherCompany->id]);
+    $invoice->invoiceLines()->createMany([
+        ['description' => 'Old line 1', 'unit_price' => 1000, 'number' => 1, 'vat_rate' => 21, 'vat' => 210, 'total' => 1000],
+    ]);
 
     $updateData = [
         'title' => 'Updated Invoice',
@@ -178,6 +181,15 @@ test('cannot update invoice from other company', function () {
         'issue_date' => $invoice->issue_date,
         'due_date' => $invoice->due_date,
         'currency' => $invoice->currency->value,
+        'invoice_lines' => $invoice->invoiceLines->map(fn($line) => [
+            'id' => $line->id,
+            'description' => $line->description,
+            'unit_price' => $line->unit_price,
+            'number' => $line->number,
+            'vat_rate' => $line->vat_rate,
+            'vat' => $line->vat,
+            'total' => $line->total,
+        ])->toArray(),
     ];
 
     $response = $this->putJson("/api/invoices/{$invoice->id}", $updateData);

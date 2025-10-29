@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Policies;
+namespace App\Policies\Api;
 
 use App\Models\InvoiceLine;
 use App\Models\User;
@@ -20,7 +20,7 @@ class InvoiceLinePolicy
      */
     public function view(User $user, InvoiceLine $invoiceLine): bool
     {
-        return true;
+        return $user->company_id === $invoiceLine->invoice->company_id;
     }
 
     /**
@@ -28,7 +28,7 @@ class InvoiceLinePolicy
      */
     public function create(User $user): bool
     {
-        return true;
+        return $user->company_id !== null;
     }
 
     /**
@@ -36,7 +36,7 @@ class InvoiceLinePolicy
      */
     public function update(User $user, InvoiceLine $invoiceLine): bool
     {
-        return true;
+        return $user->company_id === $invoiceLine->invoice->company_id;
     }
 
     /**
@@ -44,6 +44,6 @@ class InvoiceLinePolicy
      */
     public function delete(User $user, InvoiceLine $invoiceLine): bool
     {
-        return true;
+        return $user->company_id === $invoiceLine->invoice->company_id;
     }
 }
