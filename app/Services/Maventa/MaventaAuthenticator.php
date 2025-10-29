@@ -35,7 +35,7 @@ class MaventaAuthenticator
 
     protected function requestNewToken(string $maventaCompanyId, string $maventaUserIid, int $companyId): string
     {
-        $response = Http::asForm()->post("{$this->baseUrl}/oauth2/token", [
+        $response = Http::loggable()->asForm()->post("{$this->baseUrl}/oauth2/token", [
             'grant_type' => 'client_credentials',
             'client_id' => $maventaCompanyId,
             'client_secret' => $maventaUserIid,
