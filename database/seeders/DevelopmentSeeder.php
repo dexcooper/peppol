@@ -11,16 +11,17 @@ use Illuminate\Database\Seeder;
 
 class DevelopmentSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
+        $this->call(CompanySeeder::class);
+        $this->call(USerSeeder::class);
+        /*
         Company::factory()->count(5)
             ->has(Invoice::factory()->count(rand(1,10))
                 ->has(InvoiceLine::factory()->count(rand(1,5)))
             )
             ->has(User::factory()->count(rand(1,3)))
             ->create();
+        */
     }
 }
