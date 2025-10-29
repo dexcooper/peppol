@@ -22,3 +22,5 @@
 Homestead.json
 Homestead.yaml
 Thumbs.db
+database/seeders/data/companies.json
+database/seeders/data/users.json
