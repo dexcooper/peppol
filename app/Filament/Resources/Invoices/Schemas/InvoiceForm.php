@@ -49,12 +49,16 @@ class InvoiceForm
                                                         return __('forms.invoice.vat_number');
                                                     }
                                                 })
-                                                 ->columnSpan(2)
-                                                ->required(),
+                                                ->columnSpan(2)
+                                                ->required()
+                                                ->validationMessages([
+                                                    'required' => __('validation.custom.vat_number.required'),
+                                                ]),
                                             TextInput::make('external_id')
                                                 ->label(__('forms.invoice.external_id'))
                                                 ->required(),
                                             Select::make('currency')
+                                                ->label(__('forms.invoice.currency'))
                                                 ->options(collect(Currency::cases())->mapWithKeys(fn(Currency $currency) => [$currency->value => $currency->value]))
                                                 ->required()
                                                 ->default(Currency::EUR->value),

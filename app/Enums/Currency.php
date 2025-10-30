@@ -2,8 +2,12 @@
 
 namespace App\Enums;
 
+use App\Traits\EnumArrayable;
+
 enum Currency: string
 {
+    use EnumArrayable;
+
     case EUR = 'EUR';
     case USD = 'USD';
 

@@ -138,7 +138,7 @@ return [
     'prohibited_unless' => 'The :attribute field is prohibited unless :other is in :values.',
     'prohibits' => 'The :attribute field prohibits :other from being present.',
     'regex' => 'The :attribute field format is invalid.',
-    'required' => 'The :attribute field is required.',
+    'required' => ':Attribute field is required.',
     'required_array_keys' => 'The :attribute field must contain entries for: :values.',
     'required_if' => 'The :attribute field is required when :other is :value.',
     'required_if_accepted' => 'The :attribute field is required when :other is accepted.',
@@ -178,13 +178,17 @@ return [
 
     'custom' => [
         'name' => [
-            'unique' => 'This name is already in use',
+            'unique' => 'Name already in use',
         ],
         'email' => [
-            'unique' => 'This email address is already in use',
+            'unique' => 'Email address already in use',
         ],
         'vat_number' => [
-            'unique' => 'This vat number is already in use',
+            'required' => 'Enter VAT number',
+            'unique' => 'VAT number already in use',
+        ],
+        'vat_percentage' => [
+            'required' => 'Enter VAT percentage',
         ],
     ],
 

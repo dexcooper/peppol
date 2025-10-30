@@ -25,5 +25,7 @@ return [
     'active' => 'Active',
     'inactive' => 'Inactive',
     'contact_person' => 'Contact person',
+    'vat' => 'BTW',
     'vat_number' => 'BTW nummer',
+    'total' => 'Total',
 ];

@@ -2,18 +2,21 @@
 
 return [
 
-    'required' => 'Gelieve een :attribute field op te geven',
+    'required' => ':Attribute opgeven',
 
     'custom' => [
         'name' => [
-            'unique' => 'Deze naam is al in gebruik',
+            'unique' => 'Naam is al in gebruik',
         ],
         'email' => [
-            'unique' => 'Dit email adres is al in gebruik',
+            'unique' => 'Email adres is al in gebruik',
         ],
         'vat_number' => [
-            'required' => 'Gelieve een BTW nummer op te geven',
-            'unique' => 'Dit BTW nummer is al in gebruik',
+            'required' => 'BTW nummer opgeven',
+            'unique' => 'BTW nummer is al in gebruik',
+        ],
+        'vat_rate' => [
+            'required' => 'BTW percentage opgeven',
         ],
     ],
 

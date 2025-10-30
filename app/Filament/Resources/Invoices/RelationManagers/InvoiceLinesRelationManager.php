@@ -17,6 +17,7 @@ use Filament\Actions\EditAction;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\RelationManagers\RelationManager;
+use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Schema;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
@@ -30,51 +31,63 @@ class InvoiceLinesRelationManager extends RelationManager
     public function form(Schema $schema): Schema
     {
         return $schema
-            ->columns(4)
+            ->columns(1)
             ->components([
-                TextInput::make('number')
-                    ->label(__('forms.invoice_line.amount'))
-                    ->numeric()
-                    ->live()
-                    ->afterStateUpdated(function ($state, callable $set, callable $get) {
-                        $set('total_amount', $state * $get('unit_price'));
-                    }),
-                TextInput::make('unit_price')
-                    ->label(__('forms.invoice_line.unit_price'))
-                    ->numeric()
-                    ->prefix('€')
-                    ->dehydrateStateUsing(fn ($state) => $state ? (int) round($state * 100) : '')
-                    ->formatStateUsing(fn ($state) => $state ? $state / 100 : '')
-                    ->live()
-                    ->afterStateUpdated(function ($state, callable $set, callable $get) {
-                        $set('total_amount', $state * $get('number'));
-                    }),
-                Select::make('vat_rate')
-                    ->label(__('forms.invoice_line.vat_rate'))
-                    ->options(collect(VatRate::cases())->mapWithKeys(fn(VatRate $vatRate) => [$vatRate->value => $vatRate->label()]))
-                    ->required(),
-                TextInput::make('vat')
-                    ->label(__('forms.invoice_line.vat'))
-                    ->numeric()
-                    ->prefix('€')
-                    ->dehydrateStateUsing(fn ($state) => $state ? (int) round($state * 100) : '')
-                    ->formatStateUsing(fn ($state) => $state ? $state / 100 : '')
-                    ->live()
-                    ->afterStateUpdated(function ($state, callable $set, callable $get) {
-                        $set('total_amount', $state * $get('number'));
-                    }),
-                TextInput::make('total')
-                    ->label(__('forms.invoice_line.total'))
-                    ->required()
-                    ->numeric()
-                    ->prefix('€')
-                    ->dehydrateStateUsing(fn ($state) => $state ? (int) round($state * 100) : 0)
-                    ->formatStateUsing(fn ($state) => $state ? $state / 100 : ''),
-                TextInput::make('description')
-                    ->label(__('forms.invoice_line.description'))
-                    ->required()
-                    ->columnSpan(4)
-                    ->maxLength(255),
+                Grid::make(3)
+                    ->schema([
+                        TextInput::make('number')
+                            ->label(__('forms.invoice_line.amount'))
+                            ->numeric()
+                            ->live()
+                            ->afterStateUpdated(function ($state, callable $set, callable $get) {
+                                $set('total_amount', $state * $get('unit_price'));
+                            }),
+                        TextInput::make('unit_price')
+                            ->label(__('forms.invoice_line.unit_price'))
+                            ->numeric()
+                            ->prefix('€')
+                            ->dehydrateStateUsing(fn ($state) => $state ? (int) round($state * 100) : '')
+                            ->formatStateUsing(fn ($state) => $state ? $state / 100 : '')
+                            ->live()
+                            ->afterStateUpdated(function ($state, callable $set, callable $get) {
+                                $set('total_amount', $state * $get('number'));
+                            }),
+                    ]),
+                Grid::make(3)
+                    ->schema([
+                        Select::make('vat_rate')
+                            ->label(__('forms.invoice_line.vat_rate'))
+                            ->options(collect(VatRate::cases())->mapWithKeys(fn(VatRate $vatRate) => [$vatRate->value => $vatRate->label()]))
+                            ->required()
+                            ->validationMessages([
+                                'required' => __('validation.custom.vat_rate.required'),
+                            ]),
+                        TextInput::make('vat')
+                            ->label(__('forms.invoice_line.vat'))
+                            ->numeric()
+                            ->prefix('€')
+                            ->dehydrateStateUsing(fn ($state) => $state ? (int) round($state * 100) : '')
+                            ->formatStateUsing(fn ($state) => $state ? $state / 100 : '')
+                            ->live()
+                            ->afterStateUpdated(function ($state, callable $set, callable $get) {
+                                $set('total_amount', $state * $get('number'));
+                            }),
+                        TextInput::make('total')
+                            ->label(__('forms.invoice_line.total'))
+                            ->required()
+                            ->numeric()
+                            ->prefix('€')
+                            ->dehydrateStateUsing(fn ($state) => $state ? (int) round($state * 100) : 0)
+                            ->formatStateUsing(fn ($state) => $state ? $state / 100 : ''),
+                    ]),
+                Grid::make(1)
+                    ->schema([
+                         TextInput::make('description')
+                            ->label(__('forms.invoice_line.description'))
+                            ->required()
+                            ->columnSpan(4)
+                            ->maxLength(255),
+                    ])
             ]);
     }
 
@@ -86,9 +99,19 @@ class InvoiceLinesRelationManager extends RelationManager
                 TextColumn::make('description')
                     ->label(__('forms.invoice_line.description'))
                     ->searchable(),
-                TextColumn::make('money')
-                    ->label(__('forms.invoice.total_amount'))
-                    ->getStateUsing(fn($record) => MoneyFormatter::format($record->money)),
+                TextColumn::make('number')
+                    ->label(__('forms.invoice_line.amount')),
+                TextColumn::make('unit_price')
+                    ->label(__('forms.invoice_line.unit_price'))
+                    ->money(fn($record) => $record->invoice->currency->value, 100),
+                TextColumn::make('vat_rate')
+                    ->label(__('forms.invoice_line.vat_rate')),
+                TextColumn::make('vat')
+                    ->label(__('forms.invoice_line.vat'))
+                    ->money(fn($record) => $record->invoice->currency->value, 100),
+                TextColumn::make('total')
+                    ->label(__('forms.invoice_line.total'))
+                    ->money(fn($record) => $record->invoice->currency->value, 100),
             ])
             ->filters([
                 //
