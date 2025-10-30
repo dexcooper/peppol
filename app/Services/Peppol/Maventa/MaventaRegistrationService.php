@@ -1,7 +1,6 @@
 <?php
-namespace App\Services\Maventa;
+namespace App\Services\Peppol\Maventa;
 
-use App\Models\User;
 use App\Models\Company;
 
 class MaventaRegistrationService
@@ -30,8 +29,6 @@ class MaventaRegistrationService
 
         $response = $this->api->asVendor()->post('/v1/users', $payload);
 
-//        $response['user_api_key'] = 'TEST_USER_API_KEY';
-
         $company->update(['maventa_user_id' => $response['user_api_key'] ?? null]);
         return $company->maventa_user_id;
     }
@@ -59,8 +56,6 @@ class MaventaRegistrationService
         ];
 
         $response = $this->api->asVendor()->post('/v1/companies', $payload);
-
-//        $response['id'] = 'TEST_COMPANY_API_KEY';
 
         $company->update(['maventa_company_id' => $response['id'] ?? null]);
         return $company->maventa_company_id;

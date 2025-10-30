@@ -2,7 +2,7 @@
 namespace App\Filament\Actions;
 
 use App\Models\Company;
-use App\Services\Maventa\MaventaRegistrationService;
+use App\Services\Peppol\Maventa\MaventaRegistrationService;
 use Filament\Actions\Action;
 use Filament\Notifications\Notification;
 

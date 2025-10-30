@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Services\Maventa;
+namespace App\Services\Peppol\Maventa;
 
 use App\Models\Company;
+use App\Services\Peppol\Maventa\Exceptions\MaventaApiException;
 use Illuminate\Support\Facades\Http;
-use App\Services\Maventa\Exceptions\MaventaApiException;
 
 class MaventaApi
 {
@@ -33,6 +33,18 @@ class MaventaApi
         return $this;
     }
 
+    public function withBaseUrl(string $baseUrl): static
+    {
+        $this->baseUrl = $baseUrl;
+        return $this;
+    }
+
+    public function useValidationApi(): static
+    {
+        $this->baseUrl = config('maventa.validation_base_url');
+        return $this;
+    }
+
     protected function client()
     {
         $client = Http::loggable()->baseUrl($this->baseUrl)
@@ -56,6 +68,16 @@ class MaventaApi
     public function post(string $endpoint, array $payload = []): array
     {
         $response = $this->client()->post($this->fullUrl($endpoint), $payload);
+        return $this->handleResponse($response);
+    }
+
+    public function postMultipart(string $endpoint, $xml): array
+    {
+        $client = $this->client();
+
+        $response = $client->attach('file', $xml)
+            ->post($this->fullUrl($endpoint));
+
         return $this->handleResponse($response);
     }
 

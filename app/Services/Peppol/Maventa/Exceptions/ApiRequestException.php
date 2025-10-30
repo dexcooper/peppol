@@ -1,5 +1,6 @@
 <?php
-namespace App\Services\Maventa\Exceptions;
+namespace App\Services\Peppol\Maventa\Exceptions;
 
 use Exception;
+
 class ApiRequestException extends Exception {}

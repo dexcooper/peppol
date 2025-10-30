@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Services\Maventa;
+namespace App\Services\Peppol\Maventa;
 
 use App\Models\Company;
 use App\Models\User;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Cache;
-use App\Services\Maventa\Exceptions\AuthenticationException;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
 class MaventaAuthenticator
@@ -39,6 +38,8 @@ class MaventaAuthenticator
             'grant_type' => 'client_credentials',
             'client_id' => $maventaCompanyId,
             'client_secret' => $maventaUserIid,
+            'scope' => implode(config('maventa.scopes')),
+            'vendor_api_key' => config('maventa.vendor_api_key'),
         ]);
 
         if ($response->failed()) {
@@ -54,10 +55,10 @@ class MaventaAuthenticator
         return $data['access_token'] ?? throw new \RuntimeException('No access token in response.');
     }
 
-    public function refreshToken(User $user): string
+    public function refreshToken(Company $company): string
     {
-        Cache::forget($this->getCacheKey($user));
-        return $this->getAccessToken($user);
+        Cache::forget($this->getCacheKey($company));
+        return $this->getAccessToken($company);
     }
 
     protected function getCacheKey(Company $company)

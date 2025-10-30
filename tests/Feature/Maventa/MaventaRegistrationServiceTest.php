@@ -1,8 +1,9 @@
 <?php
 
-use App\Models\User;
 use App\Models\Company;
-use App\Services\Maventa\MaventaRegistrationService;
+use App\Services\Peppol\Maventa\MaventaAuthenticator;
+use App\Services\Peppol\Maventa\MaventaRegistrationService;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 
 it('creates a new Maventa user and stores the id', function () {
@@ -68,9 +69,6 @@ it('throws when Maventa API fails', function () {
 
     $service->ensureMaventaUser($company);
 });
-
-use App\Services\Maventa\MaventaAuthenticator;
-use Illuminate\Support\Facades\Cache;
 
 it('caches access token for 50 minutes', function () {
     $company = Company::factory()->create(['name' => 'Flow BV', 'maventa_user_id' => 'user_flow_002', 'maventa_company_id' => 'company_flow_002']);
